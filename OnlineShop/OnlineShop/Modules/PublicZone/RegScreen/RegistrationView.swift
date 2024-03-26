@@ -41,6 +41,9 @@ extension RegistrationView {
                 }
                 CustomButton(text: "Зарегистрироваться", isDisabled: viewStore.isEnabledRegistration, storeAuth: nil, storeReg: store)
                     .padding(.vertical, 20)
+                Text(viewStore.registerStatus)
+                    .foregroundStyle(.red)
+                    .padding(.vertical, 16)
                 Spacer()
             }
             .alert($store.scope(state: \.alert, action: \.alert))

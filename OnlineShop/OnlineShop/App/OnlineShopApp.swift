@@ -10,14 +10,25 @@ import ComposableArchitecture
 
 @main
 struct OnlineShopApp: App {
-    static let store = Store(initialState: StartScreenFeature.State()) {
-        StartScreenFeature()
-            ._printChanges()
+    let store = Store(initialState: AppFeature.State()) {
+        AppFeature()
+           // ._printChanges()
     }
     
     var body: some Scene {
         WindowGroup {
-            StartScreenView(store: OnlineShopApp.store)
+            SwitchStore(self.store) { initialState in
+                switch initialState {
+                case .authorized:
+                    CaseLet(\AppFeature.State.authorized, action: AppFeature.Action.authorized) { store in
+                        MainView(store: store)
+                    }
+                case .unauthorized:
+                    CaseLet(\AppFeature.State.unauthorized, action: AppFeature.Action.unauthorized) { store in
+                        StartScreenView(store: store)
+                    }
+                }
+            }
         }
     }
 }

@@ -12,22 +12,31 @@ import ComposableArchitecture
 struct AuthFeature {
     @ObservableState
     struct State: Equatable {
-        var email: String = ""
+        var username: String = ""
         var password: String = ""
         var isEnabledAuthorization: Bool = true
+        var authStatus = "undefined!"
     }
     
     enum Action {
-        case didChangeEmail(String)
+        case didChangeUsername(String)
         case didChangePassword(String)
         case enableAuthorization
+        case buttonTapped
+        case signInResponse(Result<Data, Error>)
+        case delegate(Delegate)
+        
+        enum Delegate {
+            case authorizationCompleted
+        }
     }
     
+    @Dependency(\.dismiss) var dismiss
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .didChangeEmail(let email):
-                state.email = email
+            case .didChangeUsername(let email):
+                state.username = email
                 return .run { send in
                     await send(.enableAuthorization)
                 }
@@ -37,11 +46,41 @@ struct AuthFeature {
                     await send(.enableAuthorization)
                 }
             case .enableAuthorization:
-                if !state.email.isEmpty && !state.password.isEmpty {
+                if !state.username.isEmpty && !state.password.isEmpty {
                     state.isEnabledAuthorization = false
                 } else {
                     state.isEnabledAuthorization = true
                 }
+                return .none
+                
+            case .buttonTapped:
+                let signInRequest = SignInRequest(username: state.username, password: state.password)
+                return .run { send in
+                    do {
+                        let response = try await NetworkClient().signIn(request: signInRequest)
+                        await send(.signInResponse(.success(response)))
+                    } catch {
+                        await send(.signInResponse(.failure(error)))
+                    }
+                }
+                
+            case .signInResponse(let result):
+                switch result {
+                case .success(let data):
+                    state.authStatus = "success"
+                    print("sign in success: ", data)
+                    return .run { send in
+                        await send(.delegate(.authorizationCompleted))
+                        await self.dismiss()
+                    }
+                    
+                case .failure(let error):
+                    state.authStatus = "failure"
+                    print("sign in error: ", error)
+                    return .none
+                }
+
+            case .delegate:
                 return .none
             }
         }

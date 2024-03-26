@@ -32,11 +32,14 @@ extension AuthView {
                     .monospaced()
                 Spacer()
                 VStack(spacing: 16) {
-                    CustomTextField(textFieldLabel: "Email...", text: viewStore.binding(get: \.email, send: { .didChangeEmail($0) }))
+                    CustomTextField(textFieldLabel: "Username...", text: viewStore.binding(get: \.username, send: { .didChangeUsername($0) }))
                     CustomTextField(textFieldLabel: "Password...", text: viewStore.binding(get: \.password, send: { .didChangePassword($0) }))
                 }
-                CustomButton(text: "Войти в аккаунт", isDisabled: viewStore.isEnabledAuthorization, storeAuth: nil, storeReg: nil)
+                CustomButton(text: "Войти в аккаунт", isDisabled: viewStore.isEnabledAuthorization, storeAuth: store, storeReg: nil)
                     .padding(.vertical, 20)
+                Text(viewStore.authStatus)
+                    .foregroundStyle(.red)
+                    .padding(.vertical, 16)
                 Spacer()
             }
         }

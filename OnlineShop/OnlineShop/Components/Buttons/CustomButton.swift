@@ -53,6 +53,8 @@ extension CustomButton {
     func registrate() {
         if let store = storeReg {
             store.send(.buttonTapped)
+        } else if let store = storeAuth {
+            store.send(.buttonTapped)
         }
     }
 }

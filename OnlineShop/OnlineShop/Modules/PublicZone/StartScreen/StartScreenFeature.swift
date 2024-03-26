@@ -18,6 +18,13 @@ struct StartScreenFeature {
         case registrationButtonTapped
         case authButtonTapped
         case destination(PresentationAction<Destination.Action>)
+        case authCompleted(AuthFeature.Action)
+        case delegate(Delegate)
+        
+        enum Delegate {
+            case authCompleted
+            case regCompleted
+        }
     }
     
     var body: some ReducerOf<Self> {
@@ -29,7 +36,17 @@ struct StartScreenFeature {
             case .authButtonTapped:
                 state.destination = .authorization(AuthFeature.State())
                 return .none
+            case .destination(.presented(.authorization(.delegate(.authorizationCompleted)))):
+                return .send(.delegate(.authCompleted))
+            case .destination(.presented(.registration(.delegate(.registrationCompleted)))):
+                return .send(.delegate(.regCompleted))
             case .destination:
+                return .none
+            case .authCompleted(.delegate(.authorizationCompleted)):
+                return .send(.delegate(.authCompleted))
+            case .authCompleted:
+                return .none
+            case .delegate:
                 return .none
             }
         }

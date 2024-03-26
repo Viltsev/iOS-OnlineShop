@@ -11,7 +11,7 @@ import ComposableArchitecture
 @Reducer
 struct AppFeature {
     enum State {
-        // todo: case authorized()
+        case authorized(MainFeature.State)
         case unauthorized(StartScreenFeature.State)
         
         init() {
@@ -20,19 +20,30 @@ struct AppFeature {
     }
     
     enum Action {
-        // todo: case authorized()
+        case authorized(MainFeature.Action)
         case unauthorized(StartScreenFeature.Action)
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .unauthorized(.delegate(.authCompleted)):
+                state = .authorized(MainFeature.State())
+                return .none
+            case .unauthorized(.delegate(.regCompleted)):
+                state = .authorized(MainFeature.State())
+                return .none
             case .unauthorized:
+                return .none
+            case .authorized:
                 return .none
             }
         }
-        .ifLet(\.unauthorized, action: \.unauthorized) {
+        .ifCaseLet(\.unauthorized, action: \.unauthorized) {
             StartScreenFeature()
+        }
+        .ifCaseLet(\.authorized, action: \.authorized) {
+            MainFeature()
         }
     }
 }

@@ -17,7 +17,7 @@ struct RegistrationFeature {
         var password: String = ""
         var isEnabledRegistration: Bool = true
         @Presents var alert: AlertState<Action.Alert>?
-        
+        var registerStatus = "undefined!"
         let newworkClient = NetworkClient()
     }
     
@@ -30,6 +30,11 @@ struct RegistrationFeature {
         case buttonTapped
         case signUpResponse(Result<Data, Error>)
         case alert(PresentationAction<Alert>)
+        case delegate(Delegate)
+        
+        enum Delegate {
+            case registrationCompleted
+        }
         
         enum Alert {
             case confirm
@@ -76,7 +81,7 @@ struct RegistrationFeature {
                 } else {
                     return .run { send in
                         do {
-                            let response = try await NetworkClient().newSignUp(request: signUpRequest)
+                            let response = try await NetworkClient().signUp(request: signUpRequest)
                             await send(.signUpResponse(.success(response)))
                         } catch {
                             await send(.signUpResponse(.failure(error)))
@@ -87,10 +92,19 @@ struct RegistrationFeature {
             case .signUpResponse(let result):
                 switch result {
                 case .success(let data):
+                    state.registerStatus = "success"
                     print("sign up success: ", data)
+                    return .run { send in
+                        await send(.delegate(.registrationCompleted))
+                        await self.dismiss()
+                    }
                 case .failure(let error):
+                    state.registerStatus = "failure"
                     print("sign up error: ", error)
+                    return .none
                 }
+                
+            case .delegate:
                 return .none
                 
             case .alert:
