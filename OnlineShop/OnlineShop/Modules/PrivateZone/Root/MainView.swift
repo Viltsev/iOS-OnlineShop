@@ -16,19 +16,62 @@ struct MainView: View {
             TabView(selection: viewStore.binding(get: \.selectedTab, send: MainFeature.Action.tabSelected),
                     content:  {
                 SneakersView()
-                    .tabItem {
-                        Image(systemName: "list.bullet")
-                        Text("Sneakers")
-                    }
-                    .tag(MainFeature.Tab.sneakers)
+                    .setUpTab(.sneakers)
                 ProfileView()
-                    .tabItem {
-                        Image(systemName: "person.fill")
-                        Text("Profile")
-                    }
-                    .tag(MainFeature.Tab.profile)
+                    .setUpTab(.profile)
             })
+            
+            CustomTabBar(viewStore: viewStore)
         }
+    }
+    
+    @ViewBuilder
+    func CustomTabBar(viewStore: ViewStore<MainFeature.State, MainFeature.Action>) -> some View {
+        HStack(spacing: 0) {
+            ForEach(viewStore.binding(get: \.allTabs, send: MainFeature.Action.allTabsAction)) { $animatedTab in
+                let tab = animatedTab.tab
+                
+                VStack {
+                    if viewStore.selectedTab == tab {
+                        withAnimation(.bouncy) {
+                            Circle()
+                                .foregroundStyle(.myGreenLight)
+                                .padding(.horizontal, 70)
+                                .overlay {
+                                    Image(systemName: tab.rawValue)
+                                        .font(.title2)
+                                        .scaleEffect(viewStore.selectedTab == tab ? 1.25 : 1.0)
+                                }
+                        }
+                    } else {
+                        Image(systemName: tab.rawValue)
+                            .font(.title2)
+                            //.scaleEffect(viewStore.selectedTab == tab ? 1.25 : 1.0)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(.myBlackGray)
+                .padding(.top, 15)
+                .padding(.bottom, 10)
+                .contentShape(.rect)
+                .onTapGesture {
+                    _ = withAnimation(.bouncy) {
+                        viewStore.send(MainFeature.Action.tabSelected(tab))
+                    }
+                }
+            }
+        }
+        .background(.white)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func setUpTab(_ tab: MainFeature.Tab) -> some View {
+        self
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .tag(tab)
+            .toolbar(.hidden, for: .tabBar)
     }
 }
 

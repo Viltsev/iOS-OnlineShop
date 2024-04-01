@@ -25,6 +25,7 @@
 		83BDAB162BBAF407000036CC /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BDAB152BBAF407000036CC /* ProfileView.swift */; };
 		83BDAB182BBAF49D000036CC /* SneakersFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BDAB172BBAF49D000036CC /* SneakersFeature.swift */; };
 		83BDAB1A2BBAF607000036CC /* SneakersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BDAB192BBAF607000036CC /* SneakersView.swift */; };
+		83BDAB1F2BBB05C0000036CC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BDAB1E2BBB05C0000036CC /* Colors.swift */; };
 		83DBC7D62BB1C02A00071433 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DBC7D52BB1C02A00071433 /* CustomButton.swift */; };
 		83DBC7DA2BB1DD2500071433 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DBC7D92BB1DD2500071433 /* NetworkClient.swift */; };
 		83DBC7DD2BB1DD7100071433 /* SignUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DBC7DC2BB1DD7100071433 /* SignUpRequest.swift */; };
@@ -51,6 +52,7 @@
 		83BDAB152BBAF407000036CC /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		83BDAB172BBAF49D000036CC /* SneakersFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SneakersFeature.swift; sourceTree = "<group>"; };
 		83BDAB192BBAF607000036CC /* SneakersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SneakersView.swift; sourceTree = "<group>"; };
+		83BDAB1E2BBB05C0000036CC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		83DBC7D52BB1C02A00071433 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		83DBC7D92BB1DD2500071433 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		83DBC7DC2BB1DD7100071433 /* SignUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRequest.swift; sourceTree = "<group>"; };
@@ -105,7 +107,6 @@
 				83977D612BAD8955005E82AB /* Resources */,
 				8315C5CD2BB15C7800A8BB4A /* Components */,
 				83977D602BAD894F005E82AB /* App */,
-				83977D562BAD891F005E82AB /* Assets.xcassets */,
 				83977D582BAD891F005E82AB /* Preview Content */,
 			);
 			path = OnlineShop;
@@ -131,6 +132,8 @@
 		83977D612BAD8955005E82AB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				83977D562BAD891F005E82AB /* Assets.xcassets */,
+				83BDAB1E2BBB05C0000036CC /* Colors.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83977D692BAD90B9005E82AB /* RegistrationView.swift in Sources */,
+				83BDAB1F2BBB05C0000036CC /* Colors.swift in Sources */,
 				83BDAB142BBAF385000036CC /* ProfileFeature.swift in Sources */,
 				83B5E5012BB201870035A4C9 /* SignInRequest.swift in Sources */,
 				8315C5D12BB15FEF00A8BB4A /* CustomTextField.swift in Sources */,

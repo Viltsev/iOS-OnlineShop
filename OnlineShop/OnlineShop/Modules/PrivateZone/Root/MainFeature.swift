@@ -10,23 +10,44 @@ import ComposableArchitecture
 
 @Reducer
 struct MainFeature {
+    
     @ObservableState
     struct State: Equatable {
         var selectedTab = Tab.sneakers
         var sneakersState = SneakersFeature.State()
         var profileState = ProfileFeature.State()
+        var allTabs: [AnimatedTab] = Tab.allCases.compactMap { tab -> AnimatedTab in
+            return .init(tab: tab)
+        }
     }
     
     enum Action {
         case tabSelected(Tab)
         case sneakersAction(SneakersFeature.Action)
         case profileAction(ProfileFeature.Action)
+        case allTabsAction
     }
     
-    enum Tab {
-        case sneakers
-        case favorites
-        case profile
+    enum Tab: String, CaseIterable, Equatable {
+        case sneakers = "house.fill"
+        // case favorites = "book.fill"
+        case profile = "person.fill"
+        
+        var title: String {
+            switch self {
+            case .sneakers:
+                return "Sneakers"
+//            case .favorites:
+//                return "Favorites"
+            case .profile:
+                return "Profile"
+            }
+        }
+    }
+    
+    struct AnimatedTab: Identifiable, Equatable {
+        var id: UUID = .init()
+        var tab: Tab
     }
     
     var body: some ReducerOf<Self> {
@@ -38,6 +59,8 @@ struct MainFeature {
             case .sneakersAction:
                 return .none
             case .profileAction:
+                return .none
+            case .allTabsAction:
                 return .none
             }
         }
