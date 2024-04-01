@@ -15,7 +15,8 @@ struct AppFeature {
         case unauthorized(StartScreenFeature.State)
         
         init() {
-            self = .unauthorized(StartScreenFeature.State())
+            //self = .unauthorized(StartScreenFeature.State())
+            self = .authorized(MainFeature.State())
         }
     }
     
